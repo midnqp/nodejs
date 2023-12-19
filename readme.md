@@ -12,7 +12,7 @@ _Notes on Node.js_ by Muhammad Bin Zafar.
 - Important third-party packages
 - JavaScript
 - TypeScript
-- Design patterns
+- Implementations of design patterns
   - Creational
   - Structural
   - Behavioral
@@ -149,7 +149,7 @@ When the event loop enters the poll phase and there are no timers scheduled, one
 
 Once the poll queue is empty the event loop will check for timers whose time thresholds have been reached. If one or more timers are ready, the event loop will wrap back to the timers phase to execute those timers' callbacks.
 
-## Core builtin modules
+## Important builtin modules
 - Filesystem `node:fs` - unique approach of reading a file asynchronously and letting the event loop know through emitting events.
 - Streams and pipes `node:stream`
 - Buffers `node:buffer`
@@ -158,7 +158,7 @@ Once the poll queue is empty the event loop will check for timers whose time thr
 - HTTP `node:http`
 - Crypto `node:crypto`
 
-## Third-party modules
+## Important third-party modules
 - Express: Overwhelmingly popular and the default approach to build a web server. 
 - Lodash: Highest downloads in all of the Node.js ecosystem
 - Sequelize: ORM abstraction over the database, to not write raw SQL and get hacked. 3nd in popularity as an ORM.
@@ -166,8 +166,8 @@ Once the poll queue is empty the event loop will check for timers whose time thr
 - Pino, Winston: Cleaner, more structured logging for production environments. Quintessential!
 - Fastify: Optional. Alternative to Express. Developed by one of the creators of Node.js itself!
 
-## Implementation of Design Patterns
-### Creational Patterns
+## Implementation of design patterns
+### Creational patterns
 ##### Singleton
 The traditional implementation is as follows.
 ```ts
@@ -195,7 +195,7 @@ const dbconn = new DbConn()
 ##### Builder
 ##### Prototype
 
-### Structural Patterns
+### Structural patterns
 ##### Adapter
 ##### Bridge
 ##### Composite
@@ -204,7 +204,7 @@ const dbconn = new DbConn()
 ##### Flyweight
 ##### Proxy
 
-### Behavioral Patterns
+### Behavioral patterns
 ##### Chain of responsibility
 ##### Command
 ##### Interpreter
