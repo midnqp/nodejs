@@ -1,5 +1,23 @@
 <p align=center><img width=30% src="https://github.com/midnqp/nodejs/assets/50658760/d77458b5-fc76-47ac-9915-de5224557c23"></p>
 
+_Notes on Node.js_ by Muhammad Bin Zafar.
+- Preface
+  - Features
+  - Benefits
+  - Drawbacks
+  - Workarounds for drawbacks
+- Event Loop
+  - Phases in detail
+- Core builtin modules
+- JavaScript
+- TypeScript
+- Design patterns
+  - Creational
+  - Structural
+  - Behavioral
+
+## Preface
+
 Node.js is an asynchronous event-driven runtime environment, built on top of the V8 JavaScript engine from Google. Node.js is designed to build scalable network applications. Node.js is created by Ryan Dahl, who made the [first ever commit](https://github.com/nodejs/node-v0.x-archive/commit/9d7895c567e8f38abfff35da1b6d6d6a0a06f9aa) on 16 Feb 2009. His intention of building Node.js was to do event-driven I/O in JavaScript to have server-side JavaScript off the ground. Node.js is a popular choice for building real-time applications, such as chat applications, streaming applications, and web servers. Node.js is also used to build microservices, which are small, independent services that can be easily scaled and deployed.
 
 ##### Features
