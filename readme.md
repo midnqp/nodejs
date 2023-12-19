@@ -8,7 +8,8 @@ _Notes on Node.js_ by Muhammad Bin Zafar.
   - Workarounds for drawbacks
 - Event Loop
   - Phases in detail
-- Core builtin modules
+- Important builtin modules
+- Important third-party packages
 - JavaScript
 - TypeScript
 - Design patterns
@@ -18,7 +19,11 @@ _Notes on Node.js_ by Muhammad Bin Zafar.
 
 ## Preface
 
-Node.js is an asynchronous event-driven runtime environment, built on top of the V8 JavaScript engine from Google. Node.js is designed to build scalable network applications. Node.js is created by Ryan Dahl, who made the [first ever commit](https://github.com/nodejs/node-v0.x-archive/commit/9d7895c567e8f38abfff35da1b6d6d6a0a06f9aa) on 16 Feb 2009. His intention of building Node.js was to do event-driven I/O in JavaScript to have server-side JavaScript off the ground. Node.js is a popular choice for building real-time applications, such as chat applications, streaming applications, and web servers. Node.js is also used to build microservices, which are small, independent services that can be easily scaled and deployed.
+Node.js is an asynchronous event-driven runtime environment, built on top of the V8 JavaScript engine from Google. Node.js is designed to build scalable network applications. 
+
+Node.js is created by Ryan Dahl, who made the [first ever commit](https://github.com/nodejs/node-v0.x-archive/commit/9d7895c567e8f38abfff35da1b6d6d6a0a06f9aa) on 16 Feb 2009. His intention of building Node.js was to do event-driven I/O in JavaScript to have server-side JavaScript off the ground. 
+
+Node.js is a popular choice for building real-time applications, such as chat applications, streaming applications, and web servers. Node.js is also used to build microservices, which are small, independent services that can be easily scaled and deployed.
 
 ##### Features
 - Single-threaded event loop. Node.js uses a single-threaded event loop to handle all of its I/O. This makes Node.js very efficient for handling concurrent requests. Almost no function in Node.js directly performs I/O, only through its event loop.
@@ -63,7 +68,9 @@ parentPort.postMessage(workerData[0] + workerData[1]) // 5
 ```
 
 ## Event Loop
-The event loop is what allows Node.js to perform non-blocking I/O operations. Node.js is similar in design to, and influenced by, systems like Ruby's [Event Machine](https://github.com/eventmachine/eventmachine) and Python's [Twisted](https://twistedmatrix.com/trac/). Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. The event loop of Node.js is single-threaded, however file I/O operations, cryptographic operations, and some network operations run in multiple threads through the thread pool.
+The event loop is what allows Node.js to perform non-blocking I/O operations. Node.js is similar in design to, and influenced by, systems like Ruby's [Event Machine](https://github.com/eventmachine/eventmachine) and Python's [Twisted](https://twistedmatrix.com/trac/). 
+
+Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. The event loop of Node.js is single-threaded, however file I/O operations, cryptographic operations, and some network operations run in multiple threads through the thread pool.
 
 ##### Phases
 The 6 phases of the event loop are as follows.
@@ -119,7 +126,9 @@ fs.readFile('small file', () => {
 // timer is done 1012     (🤯 always delays more than 1000ms, 
 //                         whereas it was supposed to delay for 100ms 🤯)
 ```
-The second setTimeout() executes the callback in the correct delay of 100ms because in order to prevent starving the event loop, libuv has a hard maximum time before it stops polling for more events. Since the file read is taking beyond 100ms, event loop moves on to the next phases/iterations and runs the callback for the setTimeout(). This is evidence that, the event loop **pauses/waits/sleeps** in the "poll" phase to see whether anything happens; if nothing happens in 100ms (varies by platform) it needs to move on to the next phase.
+The second setTimeout() executes the callback in the correct delay of 100ms because in order to prevent starving the event loop, libuv has a hard maximum time before it stops polling for more events. Since the file read is taking beyond 100ms, event loop moves on to the next phases/iterations and runs the callback for the setTimeout(). 
+
+This is evidence that, the event loop **pauses/waits/sleeps** in the "poll" phase to see whether anything happens; if nothing happens in 100ms (varies by platform) it needs to move on to the next phase.
 
 The third piece of code is evidence that I/O callbacks are executed in the "poll" phase synchronously. This is also evidence that the "poll" phase is responsible for delaying timers, because it has to execute callbacks which can take any arbitrary amount of time.
 
@@ -140,7 +149,7 @@ When the event loop enters the poll phase and there are no timers scheduled, one
 
 Once the poll queue is empty the event loop will check for timers whose time thresholds have been reached. If one or more timers are ready, the event loop will wrap back to the timers phase to execute those timers' callbacks.
 
-## Core Builtin Modules
+## Core builtin modules
 - Filesystem `node:fs` - unique approach of reading a file asynchronously and letting the event loop know through emitting events.
 - Streams and pipes `node:stream`
 - Buffers `node:buffer`
@@ -149,7 +158,7 @@ Once the poll queue is empty the event loop will check for timers whose time thr
 - HTTP `node:http`
 - Crypto `node:crypto`
 
-## Third-party Modules
+## Third-party modules
 - Express: Overwhelmingly popular and the default approach to build a web server. 
 - Lodash: Highest downloads in all of the Node.js ecosystem
 - Sequelize: ORM abstraction over the database, to not write raw SQL and get hacked. 3nd in popularity as an ORM.
@@ -160,6 +169,7 @@ Once the poll queue is empty the event loop will check for timers whose time thr
 ## Implementation of Design Patterns
 ### Creational Patterns
 ##### Singleton
+The traditional implementation is as follows.
 ```ts
 class DbConn {
   private static instance: DbConn | undefined;
@@ -173,6 +183,12 @@ class DbConn {
 }
 
 const dbconn = DbConn.getInstance()
+```
+Another interesting implementation would be as follows. However, using the `new` keyword and not getting a new instance in return can be misleading.
+```
+class DbConn {}
+
+const dbconn = new DbConn()
 ```
 ##### Abstract Factory
 ##### Factory Method
