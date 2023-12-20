@@ -1,21 +1,30 @@
 <p align=center><img width=30% src="https://github.com/midnqp/nodejs/assets/50658760/d77458b5-fc76-47ac-9915-de5224557c23"></p>
 
 _Notes on Node.js_ by Muhammad Bin Zafar.
-- Preface
-  - Features
-  - Benefits
-  - Drawbacks
-  - Workarounds for drawbacks
-- Event Loop
-  - Phases in detail
-- Important builtin modules
-- Important third-party packages
-- JavaScript
-- TypeScript
-- Implementations of design patterns
-  - Creational
-  - Structural
-  - Behavioral
+- [Preface](#preface)
+  - [Features](#features)
+  - [Benefits](#benefits)
+  - [Drawbacks](#drawbacks)
+  - [Workarounds for drawbacks](#workarounds-for-drawbacks)
+- [Event Loop](#event-loop)
+  - [Phases](#phases)
+  - [Phases in Detail](#phases-in-detail)
+    - [Timers](#timers)
+    - [Pending callbacks](#pending-callbacks)
+    - [Poll](#poll)
+- [ESM vs CJS](#esm-vs-cjs)
+- [Important builtin modules](#important-builtin-modules)
+- [Important third-party packages](#important-third-party-packages)
+- [Important Node.js backend frameworks](#important-nodejs-backend-frameworks)
+- [JavaScript](#javascript)
+- [TypeScript](#typescript)
+- [Node.js vs Deno](#nodejs-vs-deno)
+- [Node.js vs Bun](#nodejs-vs-bun)
+- [Changelog of important features across releases](#changelog-of-important-features-across-releases)
+- [Implementation of design patterns](#implementation-of-design-patterns)
+  * [Creational patterns](#creational-patterns): [Singleton](#singleton), [Abstract Factory](#abstract-factory), ...
+  * [Structural patterns](#structural-patterns): [Adapter](#adapter), [Bridge](#bridge), ...
+  * [Behavioral patterns](#behavioral-patterns): [Chain of responsibility](#chain-of-responsibility), [Command](#command), ...
 
 ## Preface
 
@@ -149,6 +158,8 @@ When the event loop enters the poll phase and there are no timers scheduled, one
 
 Once the poll queue is empty the event loop will check for timers whose time thresholds have been reached. If one or more timers are ready, the event loop will wrap back to the timers phase to execute those timers' callbacks.
 
+## ESM vs CJS
+
 ## Important builtin modules
 - Filesystem `node:fs` - unique approach of reading a file asynchronously and letting the event loop know through emitting events.
 - Streams and pipes `node:stream`
@@ -158,17 +169,66 @@ Once the poll queue is empty the event loop will check for timers whose time thr
 - HTTP `node:http`
 - Crypto `node:crypto`
 
-## Important third-party modules
-- Express: Overwhelmingly popular and the default approach to build a web server. 
-- Lodash: Highest downloads in all of the Node.js ecosystem
-- Sequelize: ORM abstraction over the database, to not write raw SQL and get hacked. 3nd in popularity as an ORM.
-- TypeORM, Prisma: the most popular ORM in all of the Node.js ecosystem. No other ORM has more downloads and popularity than them.
-- Pino, Winston: Cleaner, more structured logging for production environments. Quintessential!
-- Fastify: Optional. Alternative to Express. Developed by one of the creators of Node.js itself!
+## Important third-party packages
+- Express. Overwhelmingly popular and the default approach to build a web server. 
+- Lodash. Highest downloads in all of the Node.js ecosystem
+- Sequelize. ORM abstraction over the database, to not write raw SQL and get hacked. 3nd in popularity as an ORM.
+- TypeORM and Prisma. The most popular ORM in all of the Node.js ecosystem. No other ORM has more downloads and popularity than them.
+- Pino and Winston. Cleaner, more structured logging for production environments. Quintessential!
+- Fastify. Alternative to Express. Developed by one of the creators of Node.js itself!
+
+## Important Node.js backend frameworks
+- Nest. A really great Express-based backend framework with the perfect architecture.
+- Next. Fullstack framework with Node.js and React.
+- Koa and Fastify. Provides many relevant packages alongside.
+
+## JavaScript
+JavaScript is an interpreted, dynamically-typed, weakly-typed, multi-paradigm, garbage-collected, single-threaded programming language, often used for developing client-side web applications. 
+
+Adding features such as asynchronous filesystem access, native HTTP/QUIC support, cryptography, streams, buffers, etc are what results in a separate runtime named Node.js. Their syntax has no difference. 
+
+Each browser such as Chrome, Edge, Safari, Firefox implements their own JavaScript engine such as V8, Chakra, Webkit, Spidermonkey following the [ECMA-262](https://www.ecma-international.org/publications-and-standards/standards/ecma-262/) specification. However this results in differences among implementations for instance Chakra has a multi-threaded event loop 🤯. 
+
+Note that despite JavaScript being asserted as an "interpreted" language, in truth, it is compiled through various approaches such as JIT on the fly right before executing it - making an impression of an interpreted language.
+
+- *Code* is a set of special instructions to tell the computer what tasks to perform.
+- *Syntax* are the rules of valid format and combinations of instructions.
+- A *statement* is a group of expressions and operators that performs a specific task.
+- Statements are made up of one or more *expressions*. In ECMA and MDN docs, expressions are often coupled with operators in the same section. Clearly because most expressions are made of operators.
+- A *variable* is a container to hold a type and a value.
+- Based on various aspects of a variable, languages are divided into the following.
+  - *Strongly typed*, meaning the compiler will not allow operations between variables.
+  - *Weakly typed*, meaning the compiler will allow and may automatically do type coercion.
+  - *Statically typed*, meaning variable types are explicitly mentioned during declaration at compile-time and will not change at runtime.
+  - *Dynamically typed*, meaning a variable can be assigned new values of different types at runtime.
+
+## TypeScript
+TypeScript is a strongly-typed language with optional static-typing.
+
+## Node.js vs Deno
+Announced in 2018. The creator of Node.js and Deno is the same person, Ryan Dahl. He built Deno out of the regret of the decisions he made which building Node.js. Deno tries to fix Node.js mistakes and provides a new approach to security and application development.
+
+## Node.js vs Bun
+Bun is a more recent competitor of Node.js which gained traction around <month-of-release>. Sumner built this.
+
+## Changelog of important features across releases
+- Node.js 18 LTS
+  - Top-level await
+  - `fetch()`
+- Node.js 20 LTS
+  - Set default packaging format to ESM or CommonJS.
 
 ## Implementation of design patterns
+Design patterns are general, reusable solutions to commonly-occuring problems.
+
+Effective software design requires considering issues that may not become visible until later in the implementation.
+
 ### Creational patterns
+These design patterns are about class and/or object instantiation.
+
 ##### Singleton
+A class of which only a single instance can exist.
+
 The traditional implementation is as follows.
 ```ts
 class DbConn {
